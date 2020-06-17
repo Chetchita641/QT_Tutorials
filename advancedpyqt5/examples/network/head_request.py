@@ -1,0 +1,56 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+'''
+ZetCode Advanced PyQt5 tutorial
+
+In this example we create a HEAD request.
+
+Author: Jan Bodnar
+Website: zetcode.com
+Last edited: September 2017
+'''
+
+from PyQt5 import QtNetwork
+from PyQt5.QtCore import QCoreApplication, QUrl
+import sys
+      
+      
+class Example:
+  
+    def __init__(self):    
+        
+        self.doRequest()
+        
+        
+    def doRequest(self):   
+    
+        url = "http://www.something.com"
+        req = QtNetwork.QNetworkRequest(QUrl(url))
+        
+        self.nam = QtNetwork.QNetworkAccessManager()
+        self.nam.finished.connect(self.handleResponse)
+        self.nam.head(req)    
+      
+    def handleResponse(self, reply):
+
+        er = reply.error()
+        
+        if er == QtNetwork.QNetworkReply.NoError:
+    
+            for k, v in reply.rawHeaderPairs():
+                print(str(k, 'UTF-8'), ": ", str(v, 'UTF-8'))
+                
+        else:
+            print("Error occurred: ", er)
+            print(reply.errorString())
+            
+        QCoreApplication.quit()    
+        
+        
+app = QCoreApplication([])
+ex = Example()
+sys.exit(app.exec_())
+
+
+    
